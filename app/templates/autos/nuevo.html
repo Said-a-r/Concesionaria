@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Nuevo Auto{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Registrar Auto Nuevo</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Marca</label>
+                            <input type="text" name="marca" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Modelo</label>
+                            <input type="text" name="modelo" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Año</label>
+                            <input type="number" name="año" class="form-control" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Precio (USD)</label>
+                            <input type="number" step="0.01" name="precio" class="form-control" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Stock</label>
+                            <input type="number" name="stock" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Categoría</label>
+                        <select name="categoria" class="form-select">
+                            <option value="">Seleccionar...</option>
+                            <option>Sedán</option>
+                            <option>SUV</option>
+                            <option>Pickup</option>
+                            <option>Hatchback</option>
+                            <option>Deportivo</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Imagen</label>
+                        <input type="file" name="imagen" class="form-control" accept="image/*">
+                        <small class="text-muted">Formatos: JPG, PNG, GIF</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Auto</button>
+                    <a href="{{ url_for('autos.lista') }}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

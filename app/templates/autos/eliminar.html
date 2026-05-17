@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Eliminar Auto{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h3 class="mb-0">Confirmar Eliminación</h3>
+            </div>
+            <div class="card-body">
+                <p>¿Estás seguro de eliminar el siguiente vehículo?</p>
+                <div class="alert alert-warning">
+                    <strong>{{ auto.get('marca', '') }} {{ auto.get('modelo', '') }}</strong><br>
+                    Año: {{ auto.get('año', '') }} | Precio: ${{ auto.get('precio', 0) }}
+                </div>
+                <p class="text-danger">Esta acción no se puede deshacer.</p>
+                
+                <form method="POST">
+                    <button type="submit" class="btn btn-danger">Sí, Eliminar</button>
+                    <a href="{{ url_for('autos.lista') }}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

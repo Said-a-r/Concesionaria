@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Detalle del Auto{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h3>Detalle del Vehículo</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Marca:</strong> {{ auto.get('marca', 'N/A') }}</p>
+                <p><strong>Modelo:</strong> {{ auto.get('modelo', 'N/A') }}</p>
+                <p><strong>Año:</strong> {{ auto.get('año', 'N/A') }}</p>
+                <p><strong>Precio:</strong> ${{ auto.get('precio', 0) }}</p>
+                <p><strong>Stock:</strong> {{ auto.get('stock', 0) }}</p>
+                <p><strong>Categoría:</strong> {{ auto.get('categoria', 'N/A') }}</p>
+                
+                <div class="mt-3">
+                    <a href="{{ url_for('autos.editar', id=auto._id) }}" class="btn btn-warning">Editar</a>
+                    <a href="{{ url_for('autos.lista') }}" class="btn btn-secondary">Volver</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
