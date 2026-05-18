@@ -3,59 +3,103 @@
 {% block title %}Nuevo Auto{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h3 class="mb-0">Registrar Auto Nuevo</h3>
-            </div>
-            <div class="card-body">
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="form-modern">
+                <div class="text-center mb-4">
+                    <i class="fas fa-car fa-3x" style="color: var(--primary-color);"></i>
+                    <h2 class="mt-2">Registrar Nuevo Auto</h2>
+                    <p class="text-muted">Complete los datos del vehículo</p>
+                </div>
+                
                 <form method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Marca</label>
-                            <input type="text" name="marca" class="form-control" required>
+                            <label class="form-label">
+                                <i class="fas fa-trademark"></i> Marca *
+                            </label>
+                            <input type="text" name="marca" class="form-control" required placeholder="Ej: Toyota">
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">Modelo</label>
-                            <input type="text" name="modelo" class="form-control" required>
+                            <label class="form-label">
+                                <i class="fas fa-car"></i> Modelo *
+                            </label>
+                            <input type="text" name="modelo" class="form-control" required placeholder="Ej: Corolla">
                         </div>
                     </div>
+                    
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Año</label>
-                            <input type="number" name="año" class="form-control" required>
+                            <label class="form-label">
+                                <i class="fas fa-calendar"></i> Año *
+                            </label>
+                            <input type="number" name="año" class="form-control" required min="1950" max="2026" value="2020">
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Precio (USD)</label>
-                            <input type="number" step="0.01" name="precio" class="form-control" required>
+                            <label class="form-label">
+                                <i class="fas fa-dollar-sign"></i> Precio (USD) *
+                            </label>
+                            <input type="number" step="0.01" name="precio" class="form-control" required min="0" placeholder="0.00">
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label class="form-label">Stock</label>
-                            <input type="number" name="stock" class="form-control" required>
+                            <label class="form-label">
+                                <i class="fas fa-boxes"></i> Stock *
+                            </label>
+                            <input type="number" name="stock" class="form-control" required min="0" value="1">
                         </div>
                     </div>
+                    
                     <div class="mb-3">
-                        <label class="form-label">Categoría</label>
+                        <label class="form-label">
+                            <i class="fas fa-tags"></i> Categoría
+                        </label>
                         <select name="categoria" class="form-select">
                             <option value="">Seleccionar...</option>
-                            <option>Sedán</option>
-                            <option>SUV</option>
-                            <option>Pickup</option>
-                            <option>Hatchback</option>
-                            <option>Deportivo</option>
+                            <option value="Sedán">🚗 Sedán</option>
+                            <option value="SUV">🚙 SUV</option>
+                            <option value="Pickup">🛻 Pickup</option>
+                            <option value="Hatchback">🚘 Hatchback</option>
+                            <option value="Deportivo">🏎️ Deportivo</option>
                         </select>
                     </div>
+                    
                     <div class="mb-3">
-                        <label class="form-label">Imagen</label>
-                        <input type="file" name="imagen" class="form-control" accept="image/*">
-                        <small class="text-muted">Formatos: JPG, PNG, GIF</small>
+                        <label class="form-label">
+                            <i class="fas fa-image"></i> Imagen
+                        </label>
+                        <input type="file" name="imagen" class="form-control" accept="image/jpeg,image/png,image/jpg,image/gif" id="imageInput">
+                        <small class="text-muted">Formatos: JPG, PNG, GIF. Máximo 5MB</small>
+                        <div id="previewContainer" class="mt-2" style="display: none;">
+                            <img id="imagePreview" src="#" alt="Preview" style="max-width: 100%; max-height: 200px; border-radius: 10px;">
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Guardar Auto</button>
-                    <a href="{{ url_for('autos.lista') }}" class="btn btn-secondary">Cancelar</a>
+                    
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-modern btn-modern-primary flex-grow-1">
+                            <i class="fas fa-save"></i> Guardar Auto
+                        </button>
+                        <a href="{{ url_for('autos.lista') }}" class="btn btn-modern btn-modern-danger">
+                            <i class="fas fa-times"></i> Cancelar
+                        </a>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('imageInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('imagePreview').src = event.target.result;
+                document.getElementById('previewContainer').style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
 {% endblock %}
