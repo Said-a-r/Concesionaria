@@ -24,7 +24,7 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = os.path.join('app', 'static', 'uploads')
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
     app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
-    app.config['DEFAULT_IMAGE'] = '/static/default_car.jpg'
+    app.config['DEFAULT_IMAGE'] = '/static/uploads/default.jpg'
     
     # Registrar rutas
     from app.routes.autos_routes import autos_bp
