@@ -4,6 +4,11 @@ import os
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
+import os
+from werkzeug.utils import secure_filename
+from datetime import datetime
+
+
 autos_bp = Blueprint('autos', __name__, url_prefix='/autos')
 
 # ========== FUNCIONES AUXILIARES ==========
@@ -37,7 +42,6 @@ def lista():
 
 @autos_bp.route('/nuevo', methods=['GET', 'POST'])
 def nuevo():
-    """Página para crear nuevo auto"""
     if request.method == 'POST':
         try:
             # 1. Obtener datos del formulario

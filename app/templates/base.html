@@ -1,10 +1,9 @@
-<!-- app/templates/base.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}AutoGestión{% endblock %}</title>
+    <title>Concesionaria - {% block title %}AutoGestión{% endblock %}</title>
     
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -14,13 +13,28 @@
     
     <!-- Tu CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    
+    <style>
+        /* Ocultar flechas del input number en Chrome, Safari, Edge */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        /* Ocultar flechas del input number en Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+    </style>    
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-modern">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('autos.lista') }}">
-                <i class="fas fa-car"></i> AutoGestión
+                <i class="fas fa-car"></i> Concesionaria
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -33,8 +47,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white px-3" href="{{ url_for('autos.nuevo') }}">
-                            <i class="fas fa-plus"></i> Nuevo
+                        <a class="nav-link btn btn-success text-white px-3" href="{{ url_for('autos.nuevo') }}">
+                            <i class="fas fa-plus"></i> Nuevo Auto
                         </a>
                     </li>
                 </ul>
@@ -62,9 +76,9 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer mt-5 py-3 bg-light text-center">
         <div class="container">
-            <span>© 2024 AutoGestión - Todos los derechos reservados</span>
+            <span class="text-muted">© 2025 Concesionaria - Todos los derechos reservados</span>
         </div>
     </footer>
 
