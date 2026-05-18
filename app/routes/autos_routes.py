@@ -11,35 +11,6 @@ from datetime import datetime
 
 autos_bp = Blueprint('autos', __name__, url_prefix='/autos')
 
-<<<<<<< HEAD
-def allowed_file(filename):
-    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-
-    return (
-        '.' in filename and
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-    )
-
-
-def guardar_imagen(archivo):
-    if archivo and archivo.filename != '' and allowed_file(archivo.filename):
-
-        nombre_seguro = secure_filename(archivo.filename)
-
-        nombre_unico = f"auto_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{nombre_seguro}"
-
-        ruta_guardado = os.path.join(
-            current_app.config['UPLOAD_FOLDER'],
-            nombre_unico
-        )
-
-        archivo.save(ruta_guardado)
-
-        return f"/static/uploads/{nombre_unico}"
-
-    return "/static/uploads/default.jpg"
-
-=======
 # ========== FUNCIONES AUXILIARES ==========
 
 def allowed_file(filename):
@@ -62,7 +33,6 @@ def guardar_imagen(archivo):
     return None
 
 # ========== RUTAS CRUD ==========
->>>>>>> fccc2d046f50efcfbaf10a76b507c6e2e77318d4
 
 @autos_bp.route('/')
 def lista():
@@ -73,14 +43,8 @@ def lista():
 @autos_bp.route('/nuevo', methods=['GET', 'POST'])
 def nuevo():
     if request.method == 'POST':
-<<<<<<< HEAD
-
-        try:
-
-=======
         try:
             # 1. Obtener datos del formulario
->>>>>>> fccc2d046f50efcfbaf10a76b507c6e2e77318d4
             datos = {
                 'marca': request.form.get('marca'),
                 'modelo': request.form.get('modelo'),
@@ -88,26 +52,6 @@ def nuevo():
                 'precio': float(request.form.get('precio')),
                 'stock': int(request.form.get('stock')),
                 'categoria': request.form.get('categoria'),
-<<<<<<< HEAD
-                'imagen_url': '/static/uploads/default.jpg'
-            }
-
-            # Manejar imagen
-            if 'imagen' in request.files:
-
-                archivo = request.files['imagen']
-
-                datos['imagen_url'] = guardar_imagen(archivo)
-
-            flash('Imagen procesada correctamente', 'success')
-
-            return redirect(url_for('autos.lista'))
-
-        except Exception as e:
-
-            flash(f'Error: {str(e)}', 'danger')
-
-=======
                 'imagen_url': current_app.config['DEFAULT_IMAGE']
             }
             
@@ -143,7 +87,6 @@ def nuevo():
         except Exception as e:
             flash(f'Error al crear el auto: {str(e)}', 'danger')
     
->>>>>>> fccc2d046f50efcfbaf10a76b507c6e2e77318d4
     return render_template('autos/nuevo.html')
 
 @autos_bp.route('/<id>')
