@@ -4,14 +4,7 @@ import os
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
-import os
-from werkzeug.utils import secure_filename
-from datetime import datetime
-
-
 autos_bp = Blueprint('autos', __name__, url_prefix='/autos')
-
-# ========== FUNCIONES AUXILIARES ==========
 
 def allowed_file(filename):
     """Verifica si el archivo tiene extensión permitida"""
@@ -25,18 +18,15 @@ def guardar_imagen(archivo):
         nombre_unico = f"auto_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{nombre_seguro}"
         ruta_guardado = os.path.join(current_app.config['UPLOAD_FOLDER'], nombre_unico)
         
-        # Crear carpeta si no existe
+        
         os.makedirs(current_app.config['UPLOAD_FOLDER'], exist_ok=True)
         
         archivo.save(ruta_guardado)
         return f"/static/uploads/{nombre_unico}"
     return None
 
-# ========== RUTAS CRUD ==========
-
 @autos_bp.route('/')
 def lista():
-    """Página de listado de autos"""
     autos = obtener_todos_autos(current_app.db)
     return render_template('autos/lista.html', autos=autos)
 
@@ -44,7 +34,7 @@ def lista():
 def nuevo():
     if request.method == 'POST':
         try:
-            # 1. Obtener datos del formulario
+            # obtener datos del formulario
             datos = {
                 'marca': request.form.get('marca'),
                 'modelo': request.form.get('modelo'),
@@ -55,7 +45,7 @@ def nuevo():
                 'imagen_url': current_app.config['DEFAULT_IMAGE']
             }
             
-            # 2. Validaciones básicas
+            # 2. validaciones básicas
             if not datos['marca'] or not datos['modelo']:
                 flash('Marca y modelo son obligatorios', 'danger')
                 return render_template('autos/nuevo.html')
@@ -72,7 +62,7 @@ def nuevo():
                 flash('El stock no puede ser negativo', 'danger')
                 return render_template('autos/nuevo.html')
             
-            # 3. Manejar imagen (si viene del formulario)
+            
             if 'imagen' in request.files:
                 imagen_url = guardar_imagen(request.files['imagen'])
                 if imagen_url:
@@ -91,7 +81,6 @@ def nuevo():
 
 @autos_bp.route('/<id>')
 def detalle(id):
-    """Página de detalle de un auto"""
     auto = obtener_auto_por_id(current_app.db, id)
     if not auto:
         flash('Auto no encontrado', 'danger')
@@ -100,7 +89,6 @@ def detalle(id):
 
 @autos_bp.route('/<id>/editar', methods=['GET', 'POST'])
 def editar(id):
-    """Página para editar un auto"""
     auto = obtener_auto_por_id(current_app.db, id)
     if not auto:
         flash('Auto no encontrado', 'danger')
@@ -117,7 +105,7 @@ def editar(id):
                 'categoria': request.form.get('categoria'),
             }
             
-            # Mantener imagen actual o actualizar si se sube nueva
+            # Mantener imagen o mantener
             datos['imagen_url'] = auto.get('imagen_url')
             if 'imagen' in request.files:
                 imagen_url = guardar_imagen(request.files['imagen'])
@@ -134,7 +122,6 @@ def editar(id):
 
 @autos_bp.route('/<id>/eliminar', methods=['GET', 'POST'])
 def eliminar(id):
-    """Página para eliminar un auto con confirmación"""
     auto = obtener_auto_por_id(current_app.db, id)
     if not auto:
         flash('Auto no encontrado', 'danger')

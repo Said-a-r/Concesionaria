@@ -12,7 +12,8 @@ def crear_auto(db, datos):
 
 def obtener_todos_autos(db):
     """Devuelve todos los autos"""
-    autos = db.autos.find()
+    """Ordenar por _id descendente para mostrar los más recientes primero"""
+    autos = db.autos.find().sort('_id', -1)
     return [auto_to_dict(auto) for auto in autos]
 
 def obtener_auto_por_id(db, auto_id):

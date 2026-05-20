@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<div class="hero-section text-center py-5">
+    <div class="container">
+        <!-- IMAGEN EN CASO DE QUE ENCONTREMOS xd -->
+        
+        
+        
+        <h1 class="display-3 fw-bold text-primary mb-3">
+            ConConConConcesionaria
+        </h1>
+        
+        
+        <div class="mt-5">
+            <a href="{{ url_for('autos.lista') }}" class="btn btn-primary btn-lg px-5">
+                 Ver Inventario
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mt-5 text-center">
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
+                <h5>Añadir Vehículos</h5>
+                <p>Crear, editar y ver</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <i class="fas fa-images fa-3x text-primary mb-3"></i>
+                <h5>Imagenes</h5>
+                <p>Subir fotos de vehiculos jpg, gif y png</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <i class="fas fa-filter fa-3x text-warning mb-3"></i>
+                <h5>Filtros de busqueda</h5>
+                <p>Encontrar autos segun preferencias</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 0 0 30px 30px;
+        margin-bottom: 2rem;
+    }
+</style>
+{% endblock %}

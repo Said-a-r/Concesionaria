@@ -1,1 +1,1 @@
-# Archivo vacío - marca la carpeta como paquete Python
+# paquete python nomas

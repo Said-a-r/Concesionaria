@@ -1,6 +1,7 @@
 from flask import Flask
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from flask import Flask, render_template
 import os
 
 load_dotenv()
@@ -9,14 +10,14 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = 'clave-temporal-cambiar-despues'
     
-    # Configuración de MongoDB Atlas
+    
     mongo_uri = os.getenv('MONGO_URI')
     db_name = os.getenv('DB_NAME')
     
-    # Conectar con opciones para Atlas
+    
     client = MongoClient(
         mongo_uri,
-        tlsAllowInvalidCertificates=True  # Importante para evitar errores SSL
+        tlsAllowInvalidCertificates=True 
     )
     app.db = client[db_name]
     
@@ -26,8 +27,12 @@ def create_app():
     app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
     app.config['DEFAULT_IMAGE'] = '/static/uploads/default.jpg'
     
-    # Registrar rutas
+    
     from app.routes.autos_routes import autos_bp
     app.register_blueprint(autos_bp)
     
+    @app.route('/')
+    def index():
+        return render_template('index.html')
+
     return app

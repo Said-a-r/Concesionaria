@@ -1,3 +1,3 @@
-# Archivo base - vacío por ahora
-# Aquí irán configuraciones adicionales después
+
+# sepa la bola si se coloca algo aqui
 pass
