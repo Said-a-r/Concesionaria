@@ -3,27 +3,48 @@
 {% block title %}Lista de Autos{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Inventario de Autos</h1>
-    <a href="{{ url_for('autos.nuevo') }}" class="btn btn-success">Nuevo Auto</a>
+<div class="d-flex justify-content-end align-items-center mb-4">
+    
+    <a href="{{ url_for('autos.nuevo') }}" class="btn btn-success">
+        <i class="fas fa-plus"></i> Nuevo Auto
+    </a>
 </div>
 
 {% if autos %}
     <div class="row">
         {% for auto in autos %}
-        <div class="col-md-4 mb-3">
-            <div class="card">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ auto.get('imagen_url', '/static/default.jpg') }}" 
+                     class="card-img-top" 
+                     alt="{{ auto.marca }} {{ auto.modelo }}"
+                     style="height: 200px; object-fit: cover;"
+                     onerror="this.src='/static/default.jpg'">
+                
                 <div class="card-body">
                     <h5 class="card-title">{{ auto.get('marca', '?') }} {{ auto.get('modelo', '?') }}</h5>
                     <p class="card-text">
-                        <strong>Precio:</strong> ${{ auto.get('precio', 0) }}<br>
-                        <strong>Stock:</strong> {{ auto.get('stock', 0) }}<br>
+                        <strong></i> Precio:</strong> ${{ "{:,.2f}".format(auto.get('precio', 0)).replace(",", ".") }}<br>
+                        <strong></i> Stock:</strong> 
+                        {% if auto.get('stock', 0) > 0 %}
+                            {{ auto.get('stock') }} unidades
+                        {% else %}
+                            <span class="badge bg-danger">Agotado</span>
+                        {% endif %}<br>
                         <strong>Categoría:</strong> {{ auto.get('categoria', 'Sin categoría') }}
                     </p>
-                    <div class="btn-group">
-                        <a href="{{ url_for('autos.detalle', id=auto._id) }}" class="btn btn-sm btn-primary">Ver</a>
-                        <a href="{{ url_for('autos.editar', id=auto._id) }}" class="btn btn-sm btn-warning">Editar</a>
-                        <a href="{{ url_for('autos.eliminar', id=auto._id) }}" class="btn btn-sm btn-danger">Eliminar</a>
+                </div>
+                <div class="card-footer bg-white border-top-0">
+                    <div class="btn-group w-100">
+                        <a href="{{ url_for('autos.detalle', id=auto._id) }}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-eye"></i> Ver
+                        </a>
+                        <a href="{{ url_for('autos.editar', id=auto._id) }}" class="btn btn-sm btn-outline-warning">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a href="{{ url_for('autos.eliminar', id=auto._id) }}" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
                     </div>
                 </div>
             </div>
@@ -32,8 +53,9 @@
     </div>
 {% else %}
     <div class="alert alert-info text-center">
-        No hay autos registrados. 
-        <a href="{{ url_for('autos.nuevo') }}">Agrega el primero</a>
+        <i class="fas fa-car-side fa-3x mb-3"></i>
+        <h4>No hay autos registrados</h4>
+        
     </div>
 {% endif %}
 {% endblock %}

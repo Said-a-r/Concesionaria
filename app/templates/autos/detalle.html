@@ -5,21 +5,64 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
-        <div class="card">
+        <div class="card shadow">
             <div class="card-header bg-info text-white">
-                <h3>Detalle del vehiculo</h3>
+                <h3 class="mb-0"><i class="fas fa-car"></i> Detalle del vehiculo</h3>
             </div>
             <div class="card-body">
-                <p><strong>Marca:</strong> {{ auto.get('marca', 'N/A') }}</p>
-                <p><strong>Modelo:</strong> {{ auto.get('modelo', 'N/A') }}</p>
-                <p><strong>Año:</strong> {{ auto.get('año', 'N/A') }}</p>
-                <p><strong>Precio:</strong> ${{ auto.get('precio', 0) }}</p>
-                <p><strong>Stock:</strong> {{ auto.get('stock', 0) }}</p>
-                <p><strong>Categoría:</strong> {{ auto.get('categoria', 'N/A') }}</p>
                 
-                <div class="mt-3">
-                    <a href="{{ url_for('autos.editar', id=auto._id) }}" class="btn btn-warning">Editar</a>
-                    <a href="{{ url_for('autos.lista') }}" class="btn btn-secondary">Volver</a>
+                <div class="text-center mb-4">
+                    <img src="{{ auto.get('imagen_url', '/static/default.jpg') }}" 
+                         alt="{{ auto.marca }} {{ auto.modelo }}"
+                         style="max-width: 100%; max-height: 300px; object-fit: cover;"
+                         class="rounded shadow"
+                         onerror="this.src='/static/default.jpg'">
+                </div>
+                
+                <table class="table table-bordered">
+                    <tr>
+                        <th style="width: 30%">Marca:</th>
+                        <td>{{ auto.get('marca', 'N/A') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Modelo:</th>
+                        <td>{{ auto.get('modelo', 'N/A') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Año:</th>
+                        <td>{{ auto.get('año', 'N/A') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Precio:</th>
+                        <td class="text-success fw-bold">${{ "{:,.2f}".format(auto.get('precio', 0)).replace(",", ".") }}</td>
+                    </tr>
+                    <tr>
+                        <th>Stock:</th>
+                        <td>
+                            {% if auto.get('stock', 0) > 0 %}
+                                <span class="badge bg-success">{{ auto.get('stock') }} unidades</span>
+                            {% else %}
+                                <span class="badge bg-danger">Agotado</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Categoría:</th>
+                        <td>{{ auto.get('categoria', 'N/A') }}</td>
+                    </tr>
+                    <tr>
+                        <th>URL de Imagen:</th>
+                        <td><small>{{ auto.get('imagen_url', '/static/default.jpg') }}</small></td>
+                    </tr>
+                </table>
+                
+                <div class="mt-3 text-end">
+                    <a href="{{ url_for('autos.editar', id=auto._id) }}" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a href="{{ url_for('autos.lista') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
                 </div>
             </div>
         </div>
