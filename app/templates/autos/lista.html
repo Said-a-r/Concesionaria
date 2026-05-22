@@ -3,7 +3,73 @@
 {% block title %}Lista de Autos{% endblock %}
 
 {% block content %}
+
+
 <div class="d-flex justify-content-end align-items-center mb-4">
+   
+    <form action="{{ url_for('autos.lista') }}" method="GET" class="mb-4">
+
+    <div class="row">
+
+         <div style="width: 250px;">
+
+            <select
+                name="categoria"
+                class="form-select"
+                onchange="this.form.submit()"
+            >
+
+                <option value="">
+                    Todas las categorías
+                </option>
+
+                <option value="Sedán"
+                    {% if categoria_actual == 'Sedán' %}
+                        selected
+                    {% endif %}
+                >
+                    Sedán
+                </option>
+
+                <option value="SUV"
+                    {% if categoria_actual == 'SUV' %}
+                        selected
+                    {% endif %}
+                >
+                    SUV
+                </option>
+
+                <option value="Pickup"
+                    {% if categoria_actual == 'Pickup' %}
+                        selected
+                    {% endif %}
+                >
+                    Pickup
+                </option>
+
+                <option value="Hatchback"
+                    {% if categoria_actual == 'Hatchback' %}
+                        selected
+                    {% endif %}
+                >
+                    Hatchback
+                </option>
+
+                <option value="Deportivo"
+                    {% if categoria_actual == 'Deportivo' %}
+                        selected
+                    {% endif %}
+                >
+                    Deportivo
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+</form>
     
     <a href="{{ url_for('autos.nuevo') }}" class="btn btn-success">
         <i class="fas fa-plus"></i> Nuevo Auto

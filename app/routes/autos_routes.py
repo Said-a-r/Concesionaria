@@ -27,8 +27,32 @@ def guardar_imagen(archivo):
 
 @autos_bp.route('/')
 def lista():
+
+    categoria = request.args.get('categoria', '').strip()
+
     autos = obtener_todos_autos(current_app.db)
-    return render_template('autos/lista.html', autos=autos)
+
+    print("CATEGORIA RECIBIDA:", categoria)
+
+    if categoria != '':
+        autos_filtrados = []
+
+        for auto in autos:
+
+            categoria_auto = auto.get('categoria', '').strip()
+
+            print("AUTO:", categoria_auto)
+
+            if categoria_auto.lower() == categoria.lower():
+                autos_filtrados.append(auto)
+
+        autos = autos_filtrados
+
+    return render_template(
+        'autos/lista.html',
+        autos=autos,
+        categoria_actual=categoria
+    )
 
 @autos_bp.route('/nuevo', methods=['GET', 'POST'])
 def nuevo():
