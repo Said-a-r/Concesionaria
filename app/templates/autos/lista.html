@@ -4,83 +4,87 @@
 
 {% block content %}
 
-
-<div class="d-flex justify-content-end align-items-center mb-4">
-   
-    <form action="{{ url_for('autos.lista') }}" method="GET" class="mb-4">
-
-    <div class="row">
-
-         <div style="width: 250px;">
-
-            <select
-                name="categoria"
-                class="form-select"
-                onchange="this.form.submit()"
-            >
-
-                <option value="">
-                    Todas las categorías
-                </option>
-
-                <option value="Sedán"
-                    {% if categoria_actual == 'Sedán' %}
-                        selected
-                    {% endif %}
-                >
-                    Sedán
-                </option>
-
-                <option value="SUV"
-                    {% if categoria_actual == 'SUV' %}
-                        selected
-                    {% endif %}
-                >
-                    SUV
-                </option>
-
-                <option value="Pickup"
-                    {% if categoria_actual == 'Pickup' %}
-                        selected
-                    {% endif %}
-                >
-                    Pickup
-                </option>
-
-                <option value="Hatchback"
-                    {% if categoria_actual == 'Hatchback' %}
-                        selected
-                    {% endif %}
-                >
-                    Hatchback
-                </option>
-
-                <option value="Deportivo"
-                    {% if categoria_actual == 'Deportivo' %}
-                        selected
-                    {% endif %}
-                >
-                    Deportivo
-                </option>
-
-            </select>
-
-        </div>
-
+<!-- Tarjeta de búsqueda y filtros -->
+<div class="card shadow-sm mb-4 border-0">
+    <div class="card-body">
+        <form action="{{ url_for('autos.lista') }}" method="GET">
+            <div class="row g-3">
+                <!-- Campo de búsqueda -->
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white">
+                            <i class="fas fa-search text-primary"></i>
+                        </span>
+                        <input 
+                            type="text" 
+                            name="buscar" 
+                            class="form-control form-control-lg" 
+                            placeholder="Buscar por marca o modelo..."
+                            value="{{ request.args.get('buscar', '') }}"
+                            style="border-left: none;">
+                    </div>
+                </div>
+                
+                <!-- Filtro categoría -->
+                <div class="col-md-4">
+                    <select name="categoria" class="form-select form-select-lg">
+                        <option value="">📋 Todas las categorías</option>
+                        <option value="Sedán" {% if categoria_actual == 'Sedán' %}selected{% endif %}>🚗 Sedán</option>
+                        <option value="SUV" {% if categoria_actual == 'SUV' %}selected{% endif %}>🚙 SUV</option>
+                        <option value="Pickup" {% if categoria_actual == 'Pickup' %}selected{% endif %}>🛻 Pickup</option>
+                        <option value="Hatchback" {% if categoria_actual == 'Hatchback' %}selected{% endif %}>🚘 Hatchback</option>
+                        <option value="Deportivo" {% if categoria_actual == 'Deportivo' %}selected{% endif %}>🏎️ Deportivo</option>
+                    </select>
+                </div>
+                
+                <!-- Botón filtrar -->
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <i class="fas fa-filter"></i> Filtrar
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mostrar filtros activos y botón limpiar -->
+            {% if request.args.get('buscar') or request.args.get('categoria') %}
+            <div class="mt-3 pt-2 border-top">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted small">Filtros activos:</span>
+                        {% if request.args.get('buscar') %}
+                            <span class="badge bg-primary ms-2">
+                                🔍 {{ request.args.get('buscar') }}
+                            </span>
+                        {% endif %}
+                        {% if request.args.get('categoria') %}
+                            <span class="badge bg-success ms-2">
+                                📁 {{ request.args.get('categoria') }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    <a href="{{ url_for('autos.lista') }}" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-times"></i> Limpiar filtros
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </form>
     </div>
+</div>
 
-</form>
-    
+<!-- Botón Nuevo Auto -->
+<div class="d-flex justify-content-end mb-4">
     <a href="{{ url_for('autos.nuevo') }}" class="btn btn-success">
-        <i class="fas fa-plus"></i> Nuevo Auto
+        <i class="fas fa-plus-circle"></i> Nuevo Auto
     </a>
 </div>
 
+<!-- Resultados -->
 {% if autos %}
     <div class="row">
         {% for auto in autos %}
         <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
+            <div class="card h-100 shadow-sm border-0">
                 <img src="{{ auto.get('imagen_url', '/static/default.jpg') }}" 
                      class="card-img-top" 
                      alt="{{ auto.marca }} {{ auto.modelo }}"
@@ -90,14 +94,14 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ auto.get('marca', '?') }} {{ auto.get('modelo', '?') }}</h5>
                     <p class="card-text">
-                        <strong></i> Precio:</strong> ${{ "{:,.2f}".format(auto.get('precio', 0)).replace(",", ".") }}<br>
-                        <strong></i> Stock:</strong> 
+                        <strong><i class="fas fa-tag"></i> Precio:</strong> ${{ "{:,.2f}".format(auto.get('precio', 0)).replace(",", ".") }}<br>
+                        <strong><i class="fas fa-boxes"></i> Stock:</strong> 
                         {% if auto.get('stock', 0) > 0 %}
                             {{ auto.get('stock') }} unidades
                         {% else %}
                             <span class="badge bg-danger">Agotado</span>
                         {% endif %}<br>
-                        <strong>Categoría:</strong> {{ auto.get('categoria', 'Sin categoría') }}
+                        <strong><i class="fas fa-car"></i> Categoría:</strong> {{ auto.get('categoria', 'Sin categoría') }}
                     </p>
                 </div>
                 <div class="card-footer bg-white border-top-0">
@@ -117,11 +121,17 @@
         </div>
         {% endfor %}
     </div>
+    
+    <!-- Contador de resultados -->
+    <div class="text-center text-muted mt-3">
+        <small>Mostrando {{ autos|length }} auto(s)</small>
+    </div>
 {% else %}
-    <div class="alert alert-info text-center">
-        <i class="fas fa-car-side fa-3x mb-3"></i>
-        <h4>No hay autos registrados</h4>
-        
+    <div class="alert alert-info text-center py-5">
+        <i class="fas fa-car-side fa-4x mb-3"></i>
+        <h4>No se encontraron autos</h4>
+        <p>Intenta con otros términos de búsqueda o <a href="{{ url_for('autos.nuevo') }}">agrega un nuevo auto</a></p>
     </div>
 {% endif %}
+
 {% endblock %}

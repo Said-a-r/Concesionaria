@@ -27,27 +27,35 @@ def guardar_imagen(archivo):
 
 @autos_bp.route('/')
 def lista():
-
     categoria = request.args.get('categoria', '').strip()
-
-    autos = obtener_todos_autos(current_app.db)
-
-    print("CATEGORIA RECIBIDA:", categoria)
-
-    if categoria != '':
-        autos_filtrados = []
-
-        for auto in autos:
-
-            categoria_auto = auto.get('categoria', '').strip()
-
-            print("AUTO:", categoria_auto)
-
-            if categoria_auto.lower() == categoria.lower():
-                autos_filtrados.append(auto)
-
-        autos = autos_filtrados
-
+    busqueda = request.args.get('buscar', '').strip()
+    
+    # Construir filtro de MongoDB
+    filtro = {}
+    
+    # Filtro por categoría (exacto)
+    if categoria:
+        filtro['categoria'] = categoria
+    
+    # Filtro por búsqueda (marca o modelo, case-insensitive)
+    if busqueda:
+        filtro['$or'] = [
+            {'marca': {'$regex': busqueda, '$options': 'i'}},
+            {'modelo': {'$regex': busqueda, '$options': 'i'}}
+        ]
+    
+    # Aplicar filtro en MongoDB
+    if filtro:
+        autos_cursor = current_app.db.autos.find(filtro).sort('_id', -1)
+    else:
+        autos_cursor = current_app.db.autos.find().sort('_id', -1)
+    
+    # Convertir ObjectId a string
+    autos = []
+    for auto in autos_cursor:
+        auto['_id'] = str(auto['_id'])
+        autos.append(auto)
+    
     return render_template(
         'autos/lista.html',
         autos=autos,
