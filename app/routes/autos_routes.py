@@ -28,7 +28,11 @@ def guardar_imagen(archivo):
 @autos_bp.route('/')
 def lista():
     categoria = request.args.get('categoria', '').strip()
+
     busqueda = request.args.get('buscar', '').strip()
+
+    precio_rango = request.args.get('precio_rango', '').strip()
+    print("PRECIO:", precio_rango)
     
     # Construir filtro de MongoDB
     filtro = {}
@@ -43,7 +47,53 @@ def lista():
             {'marca': {'$regex': busqueda, '$options': 'i'}},
             {'modelo': {'$regex': busqueda, '$options': 'i'}}
         ]
-    
+      # FILTRO PRECIO
+    if precio_rango == "0-30000":
+        filtro['precio'] = {'$lt': 30000}
+
+    elif precio_rango == "30000-70000":
+        filtro['precio'] = {
+            '$gte': 30000,
+            '$lte': 70000
+        }
+
+    elif precio_rango == "70000-100000":
+        filtro['precio'] = {
+            '$gte': 70000,
+            '$lte': 100000
+        }
+
+    elif precio_rango == "100000-150000":
+        filtro['precio'] = {
+            '$gte': 100000,
+            '$lte': 150000
+        }
+
+    elif precio_rango == "150000+":
+        filtro['precio'] = {'$gt': 150000}
+
+    elif precio_rango == "Menor":
+        autos_cursor = current_app.db.autos.find(filtro).sort('precio', 1)
+
+    elif precio_rango == "Mayor":
+        autos_cursor = current_app.db.autos.find(filtro).sort('precio', -1)
+
+    # SI NO ES MENOR O MAYOR
+    if precio_rango not in ["Menor", "Mayor"]:
+        autos_cursor = current_app.db.autos.find(filtro).sort('_id', -1)
+
+    autos = []
+
+    for auto in autos_cursor:
+        auto['_id'] = str(auto['_id'])
+        autos.append(auto)
+
+    return render_template(
+        'autos/lista.html',
+        autos=autos,
+        categoria_actual=categoria
+    )
+
     # Aplicar filtro en MongoDB
     if filtro:
         autos_cursor = current_app.db.autos.find(filtro).sort('_id', -1)
@@ -53,8 +103,10 @@ def lista():
     # Convertir ObjectId a string
     autos = []
     for auto in autos_cursor:
-        auto['_id'] = str(auto['_id'])
-        autos.append(auto)
+        print("AUTO ENCONTRADO:", auto.get('precio'))
+
+    auto['_id'] = str(auto['_id'])
+    autos.append(auto)
     
     return render_template(
         'autos/lista.html',
