@@ -28,12 +28,12 @@
                 <!-- Filtro categoría -->
                 <div class="col-md-4">
                     <select name="categoria" class="form-select form-select-lg">
-                        <option value="">📋 Todas las categorías</option>
-                        <option value="Sedán" {% if categoria_actual == 'Sedán' %}selected{% endif %}>🚗 Sedán</option>
-                        <option value="SUV" {% if categoria_actual == 'SUV' %}selected{% endif %}>🚙 SUV</option>
-                        <option value="Pickup" {% if categoria_actual == 'Pickup' %}selected{% endif %}>🛻 Pickup</option>
-                        <option value="Hatchback" {% if categoria_actual == 'Hatchback' %}selected{% endif %}>🚘 Hatchback</option>
-                        <option value="Deportivo" {% if categoria_actual == 'Deportivo' %}selected{% endif %}>🏎️ Deportivo</option>
+                        <option value=""> Todas las categorías</option>
+                        <option value="Sedán" {% if categoria_actual == 'Sedán' %}selected{% endif %}> Sedán</option>
+                        <option value="SUV" {% if categoria_actual == 'SUV' %}selected{% endif %}> SUV</option>
+                        <option value="Pickup" {% if categoria_actual == 'Pickup' %}selected{% endif %}> Pickup</option>
+                        <option value="Hatchback" {% if categoria_actual == 'Hatchback' %}selected{% endif %}> Hatchback</option>
+                        <option value="Deportivo" {% if categoria_actual == 'Deportivo' %}selected{% endif %}> Deportivo</option>
                     </select>
                 </div>
                 
@@ -53,12 +53,12 @@
                         <span class="text-muted small">Filtros activos:</span>
                         {% if request.args.get('buscar') %}
                             <span class="badge bg-primary ms-2">
-                                🔍 {{ request.args.get('buscar') }}
+                                 {{ request.args.get('buscar') }}
                             </span>
                         {% endif %}
                         {% if request.args.get('categoria') %}
                             <span class="badge bg-success ms-2">
-                                📁 {{ request.args.get('categoria') }}
+                                 {{ request.args.get('categoria') }}
                             </span>
                         {% endif %}
                     </div>
