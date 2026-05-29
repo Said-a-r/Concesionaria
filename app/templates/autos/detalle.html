@@ -21,10 +21,13 @@
                 
                 <table class="table table-bordered">
                     <tr>
-                        <th style="width: 30%">Marca:</th>
-                        <td>{{ auto.get('marca', 'N/A') }}</td>
+                       <th>ID del Auto:</th>
+                          <td><code>{{ auto._id }}</code></td>
                     </tr>
                     <tr>
+                       <th>Marca:</th>
+                          <td>{{ auto.marca }}</td>
+                    </tr>
                         <th>Modelo:</th>
                         <td>{{ auto.get('modelo', 'N/A') }}</td>
                     </tr>
